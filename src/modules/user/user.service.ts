@@ -1,4 +1,9 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { hash } from 'bcrypt';
 
 import { UserServiceInterface } from './interface/user-service.interface';
@@ -17,6 +22,12 @@ export class UserService implements UserServiceInterface {
   ) {}
 
   public async create(dto: CreateUserDTO): Promise<UserInterface> {
+    const isAlreadyExists = await this.userRepository.findByEmail(dto.email);
+
+    if (isAlreadyExists) {
+      throw new BadRequestException('This email is already used');
+    }
+
     dto.password = await hash(dto.password, this.hashSalt);
 
     const user = await this.userRepository.create(dto);
