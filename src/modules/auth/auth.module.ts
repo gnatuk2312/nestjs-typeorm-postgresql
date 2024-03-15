@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 
 import { UserModule } from '../user/user.module';
@@ -9,7 +9,7 @@ import { AuthMapper } from './auth.mapper';
 import { AuthController } from './auth.controller';
 
 @Module({
-  imports: [UserModule, JwtModule],
+  imports: [JwtModule, forwardRef(() => UserModule)],
   providers: [
     {
       provide: AUTH_SERVICE,
@@ -25,5 +25,6 @@ import { AuthController } from './auth.controller';
     },
   ],
   controllers: [AuthController],
+  exports: [JwtModule],
 })
 export class AuthModule {}
