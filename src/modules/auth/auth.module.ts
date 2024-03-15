@@ -2,9 +2,10 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 
 import { UserModule } from '../user/user.module';
-import { AUTH_SERVICE, TOKEN_SERVICE } from './auth.constants';
+import { AUTH_MAPPER, AUTH_SERVICE, TOKEN_SERVICE } from './auth.constants';
 import { AuthService } from './auth.service';
 import { TokenService } from './token.service';
+import { AuthMapper } from './auth.mapper';
 import { AuthController } from './auth.controller';
 
 @Module({
@@ -13,6 +14,10 @@ import { AuthController } from './auth.controller';
     {
       provide: AUTH_SERVICE,
       useClass: AuthService,
+    },
+    {
+      provide: AUTH_MAPPER,
+      useClass: AuthMapper,
     },
     {
       provide: TOKEN_SERVICE,
