@@ -6,4 +6,5 @@ export interface UserInterface {
   lastName: string;
   email: string;
   phoneNumber: string;
+  password: string;
 }

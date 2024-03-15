@@ -11,13 +11,14 @@ export class UserRepository implements UserRepositoryInterface {
   ) {}
 
   public async create(dto: CreateUserDTO): Promise<UserInterface> {
-    const { firstName, lastName, email, phoneNumber } = dto;
+    const { firstName, lastName, email, phoneNumber, password } = dto;
 
     return await this.userRepository.create({
       firstName,
       lastName,
       email,
       phoneNumber,
+      password,
     });
   }
 

@@ -15,4 +15,7 @@ export class User extends Model<UserInterface> implements UserInterface {
 
   @Column
   phoneNumber: string;
+
+  @Column
+  password: string;
 }
