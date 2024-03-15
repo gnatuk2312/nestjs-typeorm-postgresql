@@ -37,7 +37,10 @@ export class UserService implements UserServiceInterface {
 
     if (!user) throw new NotFoundException();
 
-    console.log('UserService >> findById() >> user >>', JSON.stringify(user));
     return user;
+  }
+
+  public async findByEmail(email: string): Promise<UserInterface> {
+    return await this.userRepository.findByEmail(email);
   }
 }
