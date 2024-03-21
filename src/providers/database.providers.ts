@@ -1,16 +1,16 @@
 import { Module } from '@nestjs/common';
-import { SequelizeModule } from '@nestjs/sequelize';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    SequelizeModule.forRootAsync({
+    TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
         return {
           ...configService.get('db'),
-          autoLoadModels: true,
+          autoLoadEntities: true,
           synchronize: true, // TODO: config generating migrations instead of synchronize entities
         };
       },

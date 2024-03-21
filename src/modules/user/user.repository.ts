@@ -1,33 +1,25 @@
-import { InjectModel } from '@nestjs/sequelize';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 import { UserRepositoryInterface } from './interface/user-repository.interface';
-import { User } from './user.entity';
+import { User } from './entities/user.entity';
 import { UserInterface } from './interface/user.interface';
-import { CreateUserDTO } from './dto/create-user.dto';
 
 export class UserRepository implements UserRepositoryInterface {
   constructor(
-    @InjectModel(User) private readonly userRepository: typeof User,
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
 
-  public async create(dto: CreateUserDTO): Promise<UserInterface> {
-    const { firstName, lastName, email, phoneNumber, password } = dto;
-
-    return await this.userRepository.create({
-      firstName,
-      lastName,
-      email,
-      phoneNumber,
-      password,
-    });
+  public async create(entity: UserInterface): Promise<UserInterface> {
+    return await this.userRepository.save(entity);
   }
 
   public async findAll(): Promise<UserInterface[]> {
-    return await this.userRepository.findAll();
+    return await this.userRepository.find();
   }
 
   public async findById(id: string): Promise<UserInterface> {
-    return await this.userRepository.findByPk(id);
+    return await this.userRepository.findOne({ where: { id } });
   }
 
   public async findByEmail(email: string): Promise<UserInterface> {

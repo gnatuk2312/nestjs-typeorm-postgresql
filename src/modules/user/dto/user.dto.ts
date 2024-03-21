@@ -1,5 +1,5 @@
 export class UserDTO {
-  id: number;
+  id: string;
   createdAt: Date;
   updatedAt: Date;
   fullName: string;

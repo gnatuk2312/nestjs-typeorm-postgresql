@@ -1,16 +1,16 @@
 import { Module, forwardRef } from '@nestjs/common';
-import { SequelizeModule } from '@nestjs/sequelize';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { User } from './user.entity';
+import { User } from './entities/user.entity';
+import { AuthModule } from '../auth/auth.module';
 import { USER_MAPPER, USER_REPOSITORY, USER_SERVICE } from './user.constants';
 import { UserRepository } from './user.repository';
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { UserMapper } from './user.mapper';
-import { AuthModule } from '../auth/auth.module';
 
 @Module({
-  imports: [SequelizeModule.forFeature([User]), forwardRef(() => AuthModule)],
+  imports: [TypeOrmModule.forFeature([User]), forwardRef(() => AuthModule)],
   providers: [
     {
       provide: USER_REPOSITORY,

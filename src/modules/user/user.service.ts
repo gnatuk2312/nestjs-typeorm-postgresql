@@ -9,6 +9,7 @@ import { hash } from 'bcrypt';
 import { UserServiceInterface } from './interface/user-service.interface';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { UserInterface } from './interface/user.interface';
+import { User } from './entities/user.entity';
 import { USER_REPOSITORY } from './user.constants';
 import { UserRepositoryInterface } from './interface/user-repository.interface';
 
@@ -30,17 +31,19 @@ export class UserService implements UserServiceInterface {
 
     dto.password = await hash(dto.password, this.hashSalt);
 
-    const user = await this.userRepository.create(dto);
+    const user = new User();
 
-    console.log('UserService >> create() >> user >>', JSON.stringify(user));
-    return user;
+    user.firstName = dto.firstName;
+    user.lastName = dto.lastName;
+    user.email = dto.email;
+    user.phoneNumber = dto.phoneNumber;
+    user.password = dto.password;
+
+    return await this.userRepository.create(user);
   }
 
   public async findAll(): Promise<UserInterface[]> {
-    const users = await this.userRepository.findAll();
-
-    console.log('UserService >> findAll() >> users >>', JSON.stringify(users));
-    return users;
+    return await this.userRepository.findAll();
   }
 
   public async findById(id: string): Promise<UserInterface> {
